@@ -22,6 +22,105 @@ CREATE OR REPLACE PACKAGE BODY raksh_item_api AS
          reserved_qty_
       );
    END insert_item;
+   
+   PROCEDURE update_item(item_id_       IN NUMBER,
+                             item_name_     IN VARCHAR2,
+                             availabl_qty_ IN NUMBER,
+                             scrapped_qty_  IN NUMBER,
+                             reserved_qty_  IN NUMBER) IS
+  BEGIN
+    UPDATE RAKSH_ITEM_TAB
+       SET item_name     = item_name_,
+           availabl_qty = availabl_qty_,
+           scrapped_qty  = scrapped_qty_,
+           reserved_qty  = reserved_qty_
+     WHERE item_id = item_id_;
+  END update_item;
+
+  PROCEDURE delete_item(item_id_ IN NUMBER) IS
+  BEGIN
+    DELETE FROM RAKSH_ITEM_TAB WHERE item_id = item_id_;
+  END delete_item;
+
+  FUNCTION get_item_name(item_id IN NUMBER) RETURN VARCHAR2 AS
+    item_name VARCHAR2(100);
+  BEGIN
+  
+    DECLARE
+      CURSOR item_cursor IS
+        SELECT item_name
+          FROM RAKSH_ITEM_TAB
+         WHERE item_id = item_id;
+    BEGIN
+    
+      OPEN item_cursor;
+      FETCH item_cursor
+        INTO item_name;
+      CLOSE item_cursor;
+    
+      RETURN item_name;
+    END;
+  END get_item_name;
+
+  FUNCTION get_availabl_qty(item_id IN NUMBER) RETURN NUMBER AS
+    availabl_qty NUMBER;
+  BEGIN
+  
+    DECLARE
+      CURSOR item_cursor IS
+        SELECT availabl_qty
+          FROM RAKSH_ITEM_TAB
+         WHERE item_id = item_id;
+    BEGIN
+    
+      OPEN item_cursor;
+      FETCH item_cursor
+        INTO availabl_qty;
+      CLOSE item_cursor;
+    
+      RETURN availabl_qty;
+    END;
+  END get_availabl_qty;
+
+  FUNCTION get_scrapped_qty(item_id IN NUMBER) RETURN NUMBER AS
+    scrapped_qty NUMBER;
+  BEGIN
+  
+    DECLARE
+      CURSOR item_cursor IS
+        SELECT scrapped_qty
+          FROM RAKSH_ITEM_TAB
+         WHERE item_id = item_id;
+    BEGIN
+    
+      OPEN item_cursor;
+      FETCH item_cursor
+        INTO scrapped_qty;
+      CLOSE item_cursor;
+    
+      RETURN scrapped_qty;
+    END;
+  END get_scrapped_qty;
+
+  FUNCTION get_reserved_qty(item_id IN NUMBER) RETURN NUMBER AS
+    reserved_qty NUMBER;
+  BEGIN
+  
+    DECLARE
+      CURSOR item_cursor IS
+        SELECT reserved_qty
+          FROM RAKSH_ITEM_TAB
+         WHERE item_id = item_id;
+    BEGIN
+    
+      OPEN item_cursor;
+      FETCH item_cursor
+        INTO reserved_qty;
+      CLOSE item_cursor;
+    
+      RETURN reserved_qty;
+    END;
+  END get_reserved_qty;
 
 END raksh_item_api;
 

@@ -30,7 +30,6 @@ CREATE OR REPLACE PACKAGE BODY raksh_branch_api AS
    END insert_branch;
 
    PROCEDURE update_branch(
-      company_reg_no_ IN NUMBER,
       branch_manager_ IN VARCHAR2,
       branch_address_ IN VARCHAR2,
       branch_name_ IN VARCHAR2,
