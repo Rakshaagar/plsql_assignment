@@ -1,0 +1,5 @@
+DECLARE
+BEGIN
+   RAKSH_storage_API.insert_storage(35, 78, 20, 'processing');
+   RAKSH_storage_API.insert_storage(67, 89, 29, 'finished');
+END;

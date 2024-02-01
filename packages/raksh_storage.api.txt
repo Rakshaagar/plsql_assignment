@@ -1,0 +1,20 @@
+
+CREATE OR REPLACE PACKAGE raksh_storage_api AS
+   PROCEDURE insert_storage(
+      container_id_ IN NUMBER,
+      item_id_ IN NUMBER,
+      storage_status_ IN VARCHAR2,
+      company_reg_no_ IN NUMBER,
+      branch_id_ IN NUMBER
+   );
+   
+   
+  PROCEDURE update_storage(container_id_ IN NUMBER,
+                           item_id_ IN NUMBER,
+                           storage_status_  IN VARCHAR2,
+                           company_reg_no_ IN NUMBER,
+                           branch_id_ IN NUMBER);
+ PROCEDURE delete_storage(container_id_ IN NUMBER,
+                           branch_id IN NUMBER,
+                           item_id_ IN NUMBER);
+END raksh_storage_api;

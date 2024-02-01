@@ -1,0 +1,7 @@
+CREATE TABLE raksh_storage_tab(
+    container_id NUMBER NOT NULL,
+    item_id NUMBER NOT NULL,
+    storage_id NUMBER NOT NULL,
+    storage_status VARCHAR2(200) NOT NULL,
+    PRIMARY KEY(storage_id)
+);

@@ -1,0 +1,146 @@
+CREATE OR REPLACE PACKAGE BODY raksh_branch_api AS
+   PROCEDURE insert_branch(
+      company_reg_no_ IN NUMBER,
+      branch_manager_ IN VARCHAR2,
+      branch_address_ IN VARCHAR2,
+      branch_name_ IN VARCHAR2,
+      total_warehouse_capacity_ IN NUMBER,
+      item_id_ IN NUMBER,
+      container_id_ IN NUMBER
+   ) IS
+   BEGIN
+      INSERT INTO raksh_branch_tab (
+         company_reg_no,
+         branch_manager,
+         branch_address,
+         branch_name,
+         total_warehouse_capacity,
+         item_id, 
+         container_id
+      )
+      VALUES (
+         company_reg_no_,
+         branch_manager_,
+         branch_address_,
+         branch_name_,
+         total_warehouse_capacity_,
+         item_id_,
+         container_id_
+      );
+   END insert_branch;
+
+   PROCEDURE update_branch(
+      company_reg_no_ IN NUMBER,
+      branch_manager_ IN VARCHAR2,
+      branch_address_ IN VARCHAR2,
+      branch_name_ IN VARCHAR2,
+      total_warehouse_capacity_ IN NUMBER,
+      branch_id_ IN NUMBER
+   ) IS
+   BEGIN
+      UPDATE RAKSH_BRANCH_TAB
+         SET branch_manager = branch_manager_,
+             branch_address = branch_address_,
+             branch_name = branch_name_,
+             total_warehouse_capacity = total_warehouse_capacity_
+      WHERE branch_id = branch_id_;
+   END update_branch;
+
+   PROCEDURE delete_branch(branch_id_ IN NUMBER) IS
+   BEGIN
+      DELETE FROM RAKSH_BRANCH_TAB WHERE branch_id = branch_id_;
+   END delete_branch;
+
+   FUNCTION get_branch_name(branch_id_ IN NUMBER) RETURN VARCHAR2 IS
+      branch_name_ VARCHAR2(200);
+   BEGIN
+      SELECT branch_name
+         INTO branch_name_
+         FROM Raksh_BRANCH_TAB
+      WHERE branch_id = branch_id_;
+
+      RETURN branch_name_;
+   END get_branch_name;
+
+   FUNCTION get_branch_address(branch_id_ IN NUMBER) RETURN VARCHAR2 IS
+      branch_address_ VARCHAR2(200);
+   BEGIN
+      SELECT branch_address
+         INTO branch_address_
+         FROM RAKSH_BRANCH_TAB
+      WHERE branch_id = branch_id_;
+
+      RETURN branch_address_;
+   END get_branch_address;
+
+   FUNCTION get_branch_manager(branch_id_ IN NUMBER) RETURN VARCHAR2 IS
+      branch_manager_ VARCHAR2(200);
+   BEGIN
+      SELECT branch_manager
+         INTO branch_manager_
+         FROM RAKSH_BRANCH_TAB
+      WHERE branch_id = branch_id_;
+
+      RETURN branch_manager_;
+   END get_branch_manager;
+
+   FUNCTION get_total_warehouse_capacity(branch_id_ IN NUMBER) RETURN NUMBER IS
+      total_warehouse_capacity_ NUMBER;
+   BEGIN
+      SELECT total_warehouse_capacity
+         INTO total_warehouse_capacity_
+         FROM RAKSH_BRANCH_TAB
+      WHERE branch_id = branch_id_;
+
+      RETURN total_warehouse_capacity_;
+   END get_total_warehouse_capacity;
+
+   FUNCTION get_current_inventory(branch_id_ IN NUMBER) RETURN SYS_REFCURSOR IS
+    cur SYS_REFCURSOR;
+  BEGIN
+    OPEN cur FOR
+      SELECT ci.container_id,
+             ci.current_weight,
+             ci.max_volume,
+             ci.max_weight,
+             ci.current_volume,
+             fi.item_id,
+             fi.item_name,
+             fi.availabl_qty,
+             fi.scrapped_qty,
+             fi.reserved_qty
+        FROM RAKSH_CONTAINER_TAB ci JOIN RAKSH_ITEM_TAB fi ON ci.branch_id = branch_id_
+       WHERE ci.branch_id = branch_id_;
+  
+    RETURN cur;
+  END get_current_inventory;
+
+
+
+
+ FUNCTION get_remaining_capacity(branch_id_ IN NUMBER) RETURN NUMBER IS
+   result_ NUMBER;
+BEGIN
+   SELECT total_warehouse_capacity -
+          COALESCE((SELECT SUM(max_volume)
+                       FROM RAKSH_CONTAINER_TAB
+                      WHERE container_id IN
+                            (SELECT container_id
+                               FROM RAKSH_STORAGE_TAB
+                              WHERE storage_status = 'ACTIVE' AND
+                                    branch_id = branch_id_) AND
+                            branch_id = branch_id_),
+                     0)
+   INTO result_
+   FROM RAKSH_BRANCH_TAB
+   WHERE branch_id = branch_id_;
+
+   RETURN result_;
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+      RETURN NULL;
+END get_remaining_capacity;
+
+
+END RAKSH_BRANCH_API;
+/

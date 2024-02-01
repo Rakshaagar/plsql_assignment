@@ -1,0 +1,5 @@
+DECLARE
+BEGIN
+  raksh_company_api.insert_COMPANY('yuvd company', 'west london');
+END;
+/

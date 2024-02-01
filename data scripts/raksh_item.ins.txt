@@ -1,0 +1,7 @@
+DECLARE
+BEGIN
+   RAKSH_item_API.insert_item(54, 'bun', 69, 70, 90);
+   RAKSH_item_API.insert_item(45, 'choc', 50, 60, 70);
+   RAKSH_item_API.insert_item(67, 'icecream', 93, 86, 34);
+   RAKSH_item_API.insert_item(64, 'toffee', 92, 85, 33);
+END;

@@ -1,0 +1,64 @@
+CREATE OR REPLACE PACKAGE BODY raksh_company_api AS
+   PROCEDURE insert_COMPANY(
+      
+      company_name_ IN VARCHAR2,
+      company_address_ IN VARCHAR2
+   ) IS
+   BEGIN
+      INSERT INTO raksh_company_tab ( company_name, company_address)
+      VALUES ( company_name_, company_address_);
+   END insert_COMPANY;
+
+  FUNCTION get_company_name(company_reg_no IN VARCHAR2)RETURN VARCHAR2 IS
+     
+     result_ VARCHAR2(200);
+     
+      CURSOR get_company_name IS
+  
+         SELECT company_name
+         FROM raksh_company_tab
+         WHERE company_reg_no = company_reg_no;
+  BEGIN 
+  
+    OPEN get_company_name;
+    FETCH get_company_name INTO result_;
+    CLOSE get_company_name;   
+    
+     RETURN result_;
+  END get_company_name;
+  
+  
+ PROCEDURE update_company(company_reg_no  IN NUMBER,
+                           company_name    IN VARCHAR2,
+                           company_address IN VARCHAR2) IS
+  BEGIN
+    UPDATE RAKSH_COMPANY_TAB
+       SET company_name = company_name, company_address = company_address
+     WHERE company_reg_no = company_reg_no;
+  END update_company;
+
+  PROCEDURE delete_company(company_reg_no IN NUMBER) IS
+  BEGIN
+    DELETE FROM RAKSH_COMPANY_TAB WHERE company_reg_no = company_reg_no;
+  END delete_company;
+      
+       
+    FUNCTION get_company_address(company_reg_no IN VARCHAR2)RETURN VARCHAR2 IS
+        result_ VARCHAR2(200);
+        
+        CURSOR get_company_address IS
+        
+         SELECT company_address
+         FROM raksh_company_tab
+         WHERE company_reg_no = company_reg_no;
+        
+      BEGIN
+        OPEN get_company_address;
+        FETCH get_company_address INTO result_;
+        CLOSE get_company_address;
+        
+        RETURN result_;
+      END get_company_address;   
+      
+    
+END raksh_company_api;

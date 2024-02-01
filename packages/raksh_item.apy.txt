@@ -1,0 +1,29 @@
+CREATE OR REPLACE PACKAGE BODY raksh_item_api AS
+   PROCEDURE insert_item(
+      item_id_ IN NUMBER,
+      item_name_ IN VARCHAR2,
+      availabl_qty_ IN NUMBER,
+      scrapped_qty_ IN NUMBER,
+      reserved_qty_ IN NUMBER
+   ) IS
+   BEGIN
+      INSERT INTO raksh_item_tab (
+         item_id,
+         item_name,
+         availabl_qty,
+         scrapped_qty,
+         reserved_qty
+      )
+      VALUES (
+         item_id_,
+         item_name_,
+         availabl_qty_,
+         scrapped_qty_,
+         reserved_qty_
+      );
+   END insert_item;
+
+END raksh_item_api;
+
+
+

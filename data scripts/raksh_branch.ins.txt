@@ -1,0 +1,6 @@
+DECLARE
+BEGIN
+   RAKSH_branch_API.insert_branch(35, 'john', 'mumbai', 'ton', 100, 12, 1);
+   RAKSH_branch_API.insert_branch(36, 'dilu', 'colombo', 'tom', 120, 45, 2);
+   RAKSH_branch_API.insert_branch(23, 'blue', 'sydney', 'ROY', 200, 56, 45);
+END;
